@@ -125,3 +125,42 @@ class TaskService:
             )
 
         TaskRepository.delete(db, task)
+
+
+    @staticmethod
+    def get_filtered_tasks(
+        db: Session,
+        *,
+        search: str | None = None,
+        status: str | None = None,
+        priority: str | None = None,
+        assignee: int | None = None,
+        sort_by: str = "created_at",
+        order: str = "desc",
+        page: int = 1,
+        limit: int = 10,
+    ):
+
+        tasks, total = TaskRepository.get_filtered_tasks(
+            db,
+            search=search,
+            status=status,
+            priority=priority,
+            assignee=assignee,
+            sort_by=sort_by,
+            order=order,
+            page=page,
+            limit=limit,
+        )
+
+        total_pages = math.ceil(
+            total / limit
+        ) if total > 0 else 0
+
+        return {
+            "items": tasks,
+            "page": page,
+            "limit": limit,
+            "total": total,
+            "total_pages": total_pages,
+        }

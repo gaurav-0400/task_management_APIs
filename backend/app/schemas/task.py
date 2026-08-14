@@ -48,3 +48,11 @@ class TaskResponse(BaseModel):
     due_date: date | None
     created_at: datetime
     updated_at: datetime
+
+##pagination###
+class TaskListResponse(BaseModel):
+    items: list[TaskResponse]
+    page: int
+    limit: int
+    total: int
+    total_pages: int
